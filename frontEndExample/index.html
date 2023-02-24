@@ -8,8 +8,11 @@
       $(document).ready(() => {
         $("#payment-form").on("submit", (event) => {
           event.preventDefault();
-          const formData = $("#payment-form").serialize();
-
+          const formData = jQuery("#payment-form").serializeArray();
+          let data = {};
+          formData.forEach((item) => {
+            data[item.name] = item.value;
+          });
           // Form validation
           let isValid = true;
           const cardNumber = $("#cardNumber").val();
@@ -41,7 +44,8 @@
             $.ajax({
               url: "http://localhost:3000/payment/makepayment",
               type: "POST",
-              data: formData,
+              data: JSON.stringify(data),
+              contentType: "application/json",
               success: (response) => {
                 // Show success message to user
                 alert(response.message);
