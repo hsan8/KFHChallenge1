@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(() => {
+        $("#payment-form").on("submit", (event) => {
+          event.preventDefault();
+          const formData = jQuery("#payment-form").serializeArray();
+          let data = {};
+          formData.forEach((item) => {
+            data[item.name] = item.value;
+          });
+          // Form validation
+          let isValid = true;
+          const cardNumber = $("#cardNumber").val();
+          const cvv = $("#cvv").val();
+          const cardHolderName = $("#cardHolderName").val();
+          const expirationMonth = $("#expirationMonth").val();
+          const expirationYear = $("#expirationYear").val();
+          if (cardNumber == "" || cvv == "" || cardHolderName == "" || expirationMonth == "" || expirationYear == "") {
+            isValid = false;
+            alert("Please fill in all required fields.");
+          } else if (!/^[0-9]+$/.test(cardNumber) || cardNumber.length !== 16) {
+            isValid = false;
+            alert("Please enter a valid 16-digit card number.");
+          } else if (!/^[0-9]+$/.test(cvv) || cvv.length !== 3) {
+            isValid = false;
+            alert("Please enter a valid 3-digit CVV number.");
+          } else if (!/^[a-zA-Z ]+$/.test(cardHolderName)) {
+            isValid = false;
+            alert("Please enter a valid cardholder name.");
+          } else if (!/^[0-9]+$/.test(expirationMonth) || expirationMonth.length !== 2) {
+            isValid = false;
+            alert("Please enter a valid 2-digit expiration month.");
+          } else if (!/^[0-9]+$/.test(expirationYear) || expirationYear.length !== 4) {
+            isValid = false;
+            alert("Please enter a valid 4-digit expiration year.");
+          }
+          if (isValid) {
+            //server call by ajax
+            $.ajax({
+              url: "http://localhost:3000/payment/makepayment",
+              type: "POST",
+              data: JSON.stringify(data),
+              contentType: "application/json",
+              success: (response) => {
+                // Show success message to user
+                alert(response.message);
+              },
+              error: (xhr, status, error) => {
+                // Show error message to user
+                alert("Error processing payment.");
+              },
+            });
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Payment Form</h1>
+    <form id="payment-form" method="POST">
+      <label for="cardNumber">Card Number:</label>
+      <input type="text" id="cardNumber" name="cardNumber" />
+
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" name="cvv" />
+
+      <label for="cardHolderName">Cardholder Name:</label>
+      <input type="text" id="cardHolderName" name="cardHolderName" />
+
+      <label for="expirationMonth">Expiration Month:</label>
+      <input type="text" id="expirationMonth" name="expirationMonth" />
+
+      <label for="expirationYear">Expiration Year:</label>
+      <input type="text" id="expirationYear" name="expirationYear" />
+
+      <button type="submit">Pay Now</button>
+    </form>
+  </body>
+</html>
