@@ -87,7 +87,7 @@ async function insertData() {
 
     const cvv1 = encryptedCVV("123");
     const cvv2 = encryptedCVV("321");
-    const cardNumber1 = encryptedCardNumber("1234567812345678");
+    const cardNumber1 = encryptedCardNumber("5402376639239521");
     const cardNumber2 = encryptedCardNumber("9876543298765432");
 
     await client.query(`
