@@ -5,7 +5,7 @@ const {
   checkCardValidity,
   finishPayment,
 } = require("../services/paymentSession.service");
-const { cardDetailsValidation, isValidCard } = require("../utility/dataValidation");
+const { cardDetailsValidation, isValidLuhnNumber } = require("../utility/dataValidation");
 const { getCardDetails, updatePaymentToFailed } = require("../utility/queries");
 
 /**
@@ -26,7 +26,7 @@ async function createPayment(req, res) {
   let { cardNumber, cvv, cardHolderName, expirationMonth, expirationYear } = req.body;
 
   // Ensure cart validity based on luhn algorithm
-  if (!isValidCard(cardNumber)) {
+  if (!isValidLuhnNumber(cardNumber)) {
     return res.status(200).json({ message: "Invalid cart number based on luhnAlgorithm." });
   }
 
