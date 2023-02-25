@@ -2,10 +2,7 @@
 <html>
   <head>
     <title>Payment Form</title>
-    <link
-      rel="stylesheet"
-      href="style.css"
-    />
+    <link rel="stylesheet" href="style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       $(document).ready(() => {
@@ -75,49 +72,21 @@
   </head>
   <body>
     <h1>Payment Form</h1>
-    <form
-      id="payment-form"
-      method="POST"
-    >
-      <label for="cardNumber">Card Number:</label>
-      <input
-        type="text"
-        id="cardNumber"
-        value="1234567812345678"
-        name="cardNumber"
-      />
+    <form id="payment-form" method="POST">
+      <label for="cardNumber">Card Number :</label>
+      <input type="text" id="cardNumber" value="5402376639239521" name="cardNumber" />
 
       <label for="cvv">CVV:</label>
-      <input
-        type="text"
-        id="cvv"
-        value="123"
-        name="cvv"
-      />
+      <input type="text" id="cvv" value="123" name="cvv" />
 
       <label for="cardHolderName">Cardholder Name:</label>
-      <input
-        type="text"
-        id="cardHolderName"
-        value="KFH customer one"
-        name="cardHolderName"
-      />
+      <input type="text" id="cardHolderName" value="KFH customer one" name="cardHolderName" />
 
       <label for="expirationMonth">Expiration Month:</label>
-      <input
-        type="text"
-        id="expirationMonth"
-        value="10"
-        name="expirationMonth"
-      />
+      <input type="text" id="expirationMonth" value="10" name="expirationMonth" />
 
       <label for="expirationYear">Expiration Year:</label>
-      <input
-        type="text"
-        id="expirationYear"
-        value="2024"
-        name="expirationYear"
-      />
+      <input type="text" id="expirationYear" value="2024" name="expirationYear" />
 
       <button type="submit">Pay Now</button>
       <p>Note: you will receive an OTP on your mobile number to confirm your payment</p>
