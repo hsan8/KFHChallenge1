@@ -41,9 +41,15 @@ sudo docker-compose up
         GENERAL section ==> Name: ('KFH SERVER')
         CONNECTION section ==> Host name/address:('dbserver') , Port:(5432), Username:('kfhusername'), Password:('kfhpassword')
      * click (save) buuton 
-     Note: any issue or you need any clarification just call or email me and I will be happy to answer
+    Note: If you face any issues or need any clarification, feel free to call or email me, and I will be happy to help.
 
 Once you connect to pgadmin just restart the containers  using ```sudo docker-compose down``` then ```sudo docker-compose up``` 
+
+# versions
+- nodejs: latest
+- postgres: 12
+- apache 2
+
 
 # Encryption part
 
@@ -62,8 +68,12 @@ supports a wide range of encryption algorithms, and has a large and active commu
 ```
 
 #TODO
-- Use clustring to balncing the load on the server
-- use microservice to let the project more scalable and more efficient 
-- use redis to catch the data and minimize the load on on the main db 
-- use redis stream as message broker to exchange the messages between each microservices
-- improve the security part
+- Use clustering to balance the load on the server.
+- Use microservices to make the project more scalable and efficient.
+- Use Redis to cache the data and minimize the load on the main DB.
+- Use Redis Stream as a message broker to exchange messages between each microservice.
+- Improve the security part.
+
+
+
+
