@@ -3,6 +3,7 @@ const client = require("./database");
 
 async function tablesGenerator() {
   try {
+    await client.query("DROP TABLE customer, account,credit_cards,payment ");
     await client.query(
       `CREATE TABLE IF NOT EXISTS customer (
         id SERIAL PRIMARY KEY,
@@ -10,7 +11,7 @@ async function tablesGenerator() {
         phoneNumber TEXT NOT NULL UNIQUE,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
-        );`,
+        );`
     );
     console.log("====> Table customer (if not exists) created successfully");
 
@@ -24,7 +25,7 @@ async function tablesGenerator() {
                 currency VARCHAR(3) NOT NULL CHECK (currency = 'USD'),
                 created_at TIMESTAMP DEFAULT NOW(),
                 updated_at TIMESTAMP DEFAULT NOW()
-              );`,
+              );`
     );
     console.log("====> Table account (if not exists) created successfully");
 
@@ -41,7 +42,7 @@ async function tablesGenerator() {
         expiration_year INTEGER NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
-      );`,
+      );`
     );
     console.log("====> Table credit_cards (if not exists) created successfully");
 
@@ -56,7 +57,7 @@ async function tablesGenerator() {
         payment_session_key TEXT NOT NULL,
         payment_date TIMESTAMP NOT NULL DEFAULT NOW(),
         payment_status VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (payment_status IN ('Pending', 'Failed', 'Captured'))
-      );`,
+      );`
     );
     console.log("====> Table payment (if not exists) created successfully");
     insertData();
