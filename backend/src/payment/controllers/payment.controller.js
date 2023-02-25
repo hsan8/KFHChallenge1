@@ -1,6 +1,11 @@
 const { updateResponse } = require("../../authentication/controllers/auth.controller");
-const { createPaymentSession, checkOtp, checkCardValidity, finishPayment } = require("../services/paymentSession.service");
-const { cardDetailsValidation } = require("../utility/dataValidation");
+const {
+  createPaymentSession,
+  checkOtp,
+  checkCardValidity,
+  finishPayment,
+} = require("../services/paymentSession.service");
+const { cardDetailsValidation, isValidCard } = require("../utility/dataValidation");
 const { getCardDetails, updatePaymentToFailed } = require("../utility/queries");
 
 /**
@@ -17,6 +22,14 @@ async function createPayment(req, res) {
     return res.status(200).json({ message: error.details[0].message });
   }
 
+  // Get the card details using the provided card number, CVV, cardholder name, expiration month, and expiration year.
+  let { cardNumber, cvv, cardHolderName, expirationMonth, expirationYear } = req.body;
+
+  // Ensure cart validity based on luhn algorithm
+  if (!isValidCard(cardNumber)) {
+    return res.status(200).json({ message: "Invalid cart number based on luhnAlgorithm." });
+  }
+
   // Ensure the expiration date is in the future.
   const currentDate = new Date();
   const expirationDate = new Date(req.body.expirationYear, req.body.expirationMonth - 1, 1);
@@ -24,13 +37,11 @@ async function createPayment(req, res) {
     return res.status(200).json({ message: "Expiration date must be greater than current today." });
   }
 
-  // Get the card details using the provided card number, CVV, cardholder name, expiration month, and expiration year.
-  let { cardNumber, cvv, cardHolderName, expirationMonth, expirationYear } = req.body;
   const cartDetails = await getCardDetails(cardNumber, cvv, cardHolderName, expirationMonth, expirationYear);
 
   // Return an error if the card details are invalid.
   if (cartDetails.length === 0) {
-    return res.status(200).json({status: "invalid_card", message: "Invalid card details" });
+    return res.status(200).json({ status: "invalid_card", message: "Invalid card details" });
   }
 
   // Create a payment session using the retrieved card details and generate an OTP to be sent to the user's phone number.
@@ -44,7 +55,8 @@ async function validatePayment(req, res) {
   const { payment_session_key, payment_id } = req.payment;
   const { otp } = req.body;
 
-  if (!payment_session_key || !payment_id || !otp) return res.status(200).json({ status: "input_error", message: "Invalid payment details" });
+  if (!payment_session_key || !payment_id || !otp)
+    return res.status(200).json({ status: "input_error", message: "Invalid payment details" });
 
   // check otp and session validity
   const resultOtp = await checkOtp(payment_session_key, otp);
