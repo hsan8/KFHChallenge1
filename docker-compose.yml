@@ -1,0 +1,57 @@
+version: '3'
+services:
+  dbserver:
+    image: postgres
+    environment:
+      POSTGRES_USER: kfhusername
+      POSTGRES_PASSWORD: kfhpassword
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kfhusername"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: kfhadmin@kfh.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  backend:
+    build: 
+      context: ./backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      dbserver:
+        condition: service_healthy
+    environment:
+      DATABASE_USER: kfhusername
+      DATABASE_HOST: dbserver
+      DATABASE_NAME: postgres
+      DATABASE_PASSWORD: kfhpassword
+      DATABASE_PORT: 5432
+      SERVER_PORT: 3000
+      ENCRYPTION_KEY_CVV: "}R_vR|,8*o_Qaw<]hl>V%WoWMCe1N@Wq*Zr5u},FL)O'H(/(1*f.v^,x{AFx4tP"
+      ENCRYPTION_KEY_CART: "C$QM,<nbC>Hm}RT'fD59J~nBa$cB?0V1nvLEE)0`Mp]tCwdW?,q=p-SrkU6[kql"
+      ENCRYPTION_KEY_ACCESS_TOEKN: "5958E635F3B3994111AB3F4998DEB"
+      ENCRYPTION_KEY_PAYMENT_SESSION: "3C74A11FF27CD66ACD64E869AE3B8"
+      REFRESH_TOKEN_EXPIRY: 1200 
+      ACCESS_TOKEN_EXPIRY: 600 
+      FRONT_END_BASE_URL: "http://frontend:80"
+  frontend:
+    build: 
+      context: ./frontEndExample
+    ports:
+      - "80:80"
+volumes:
+  pgadmin-data:
+networks:
+  default:
+    name: postgre-service_default

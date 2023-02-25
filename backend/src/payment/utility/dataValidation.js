@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const cartdetaisValidation = Joi.object({
+const cardDetailsValidation = Joi.object({
   cardNumber: Joi.string().length(16).pattern(/^\d+$/).required(),
   cvv: Joi.string().length(3).pattern(/^\d+$/).required(),
   cardHolderName: Joi.string()
@@ -10,4 +10,4 @@ const cartdetaisValidation = Joi.object({
   expirationYear: Joi.number().integer().min(1900).max(9999).required(),
 });
 
-module.exports = { cartdetaisValidation };
+module.exports = { cardDetailsValidation };

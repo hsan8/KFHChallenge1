@@ -17,6 +17,15 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 
+// Require the CORS module
+const cors = require("cors");
+const corsOptions = {
+  origin: ["http://localhost:3000", "http://localhost"],
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 // Require the Cookie Parser module
 const cookieParser = require("cookie-parser");
 
@@ -29,32 +38,16 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 // Use Cookie Parser middleware to parse cookies
 app.use(cookieParser());
 
-// Require the CORS module
-const cors = require("cors");
-
-// Use CORS middleware to allow access only from the specified frontend host
-// app.use(cors({ credentials: true, origin: process.env.FRONT_END_BASE_URL }));
-
 // Require the table generation module to generate database tables on the first run
-require("./config/tablesGeneration").tablesGenrator();
+require("./config/tablesGeneration").tablesGenerator();
 
 // Require a custom constant module
 require("./constant");
 
 // Create a route to handle root requests
 app.get("/", (req, res) => {
-  res.send(
-    "Server. Version: " +
-      global.buildVersion +
-      " | Built Date : " +
-      global.buildDate +
-      " | Server Start Time: " +
-      new Date()
-  );
+  res.send("Server. Version: " + global.buildVersion + " | Built Date : " + global.buildDate + " | Server Start Time: " + new Date());
 });
-
-// Enable CORS
-app.use(cors());
 
 // Parse JSON request bodies
 app.use(bodyParser.json());

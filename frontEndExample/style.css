@@ -65,3 +65,20 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #2980b9;
 }
+.message {
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+.message.success {
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.message.failed {
+  background-color: #e74c3c;
+  color: #fff;
+}
