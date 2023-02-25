@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Payment Form</title>
+    <link
+      rel="stylesheet"
+      href="style.css"
+    />
+  </head>
+  <body>
+    <h1>OTP checking</h1>
+    <form id="otp-form">
+      <p>OTP  will be fix for testing to: 1111</p>
+      <p>The amount  will be fix for testing to: 10 USD</p>
+      <label for="otp">OTP:</label>
+      <input
+        type="text"
+        id="otp"
+        name="otp"
+        value="1111"
+      />
+      <button type="submit">Check OTP</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#otp-form").on("submit", function (event) {
+          event.preventDefault();
+          let otp = $("#otp").val();
+          $.ajax({
+            url: "http://localhost:3000/payment/validatepayment",
+            method: "POST",
+            data: {
+              otp: "1111",
+            },
+            crossDomain: true,
+            xhrFields: {
+              withCredentials: true,
+            },
+          })
+            .done(function (response) {
+              alert(response.message);
+              console.log("******",response.status.toString());
+              console.log(response.status.toString() == "ok");
+              if (response.status == "ok") {
+                window.location.href = "http://localhost/success.html";
+              } 
+              else {
+                window.location.href = "http://localhost/failed.html";
+              }
+            })
+            .fail(function (error) {
+              alert("payment failed");
+              window.location.href = "http://localhost/failed.html";
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,11 +1,14 @@
-# Use an official Apache runtime as a parent image
-FROM httpd:latest
+FROM ubuntu:latest
 
-WORKDIR /
-COPY package*.json /usr/local/apache2/htdocs/
-EXPOSE 8080
+# Install Apache
+RUN apt-get update && \
+    apt-get install -y apache2
 
-ENV NODE_ENV=production
-RUN npm install 
-COPY . /
+# Copy files to web server
+COPY ./* /var/www/html/
 
+# Expose port 80 for HTTP traffic
+EXPOSE 80
+
+# Start Apache service
+CMD ["apache2ctl", "-D", "FOREGROUND"]
