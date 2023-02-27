@@ -17,7 +17,7 @@ OS Type: 64-bit
 GNOME VERSION: 42.2
 ```
 # To Run the Project:
-Not: make sur that the port 3000, 80, 5050, 5432 are available to run proprly the project
+Not: make sure that the port 3000, 80, 5050, 5432 are available to run proprly the project
 
 - clone the project 
 
